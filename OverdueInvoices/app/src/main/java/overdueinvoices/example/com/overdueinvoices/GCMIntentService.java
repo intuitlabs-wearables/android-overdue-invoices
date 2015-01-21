@@ -1,5 +1,11 @@
 package overdueinvoices.example.com.overdueinvoices;
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+//  Copyright (c) 1/2/15 Intuit Inc. All rights reserved. Unauthorized reproduction is a
+//  violation of applicable law. This material contains certain confidential and proprietary
+//  information and trade secrets of Intuit Inc.
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -60,8 +66,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     /**
      * Callback called upon a GCM error.
-     * @param context
-     * @param arg1
+     * @param context Application context
+     * @param arg1 Error string
      */
     @Override
     protected void onError(Context context, String arg1) {
@@ -70,8 +76,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     /**
      * Callback called when device is unregisterd from GCM.
-     * @param context
-     * @param arg1
+     * @param context Application context
+     * @param arg1 Unregister message
      */
     @Override
     protected void onUnregistered(Context context, String arg1) {
