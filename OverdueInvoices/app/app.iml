@@ -9,6 +9,7 @@
     <facet type="android" name="Android">
       <configuration>
         <option name="SELECTED_BUILD_VARIANT" value="debug" />
+        <option name="SELECTED_TEST_ARTIFACT" value="_android_test_" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
         <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleDebugTest" />
@@ -88,8 +89,10 @@
     <orderEntry type="library" exported="" name="support-v4-21.0.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-6.5.87" level="project" />
     <orderEntry type="library" exported="" name="png-android-sdk-1.1.0.3" level="project" />
-    <orderEntry type="library" exported="" name="intuitwear-android-sdk-0.2" level="project" />
+    <orderEntry type="library" exported="" name="intuitwear-android-sdk-0.3" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3" level="project" />
+    <orderEntry type="library" exported="" name="1_gson-2.3" level="project" />
+    <orderEntry type="library" exported="" name="commons-codec-20041127.091804" level="project" />
   </component>
 </module>
 

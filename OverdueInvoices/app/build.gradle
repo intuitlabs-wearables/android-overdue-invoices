@@ -24,5 +24,6 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.5.87'
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.android.support:support-v13:20.0.0'
-    compile files('libs/png-android-sdk-1.1.0.3.jar', 'libs/intuitwear-android-sdk-0.2.jar')
+    compile files('libs/png-android-sdk-1.1.0.3.jar')
+    compile files('libs/intuitwear-android-sdk-0.3.jar')
 }
