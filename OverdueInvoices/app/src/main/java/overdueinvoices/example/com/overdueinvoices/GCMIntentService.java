@@ -32,7 +32,9 @@ import com.intuit.intuitwear.exceptions.IntuitWearException;
 import com.intuit.intuitwear.notifications.IWearAndroidNotificationSender;
 import com.intuit.intuitwear.notifications.IWearNotificationSender;
 import com.intuit.intuitwear.notifications.IWearNotificationType;
-import com.intuit.mobile.png.sdk.PushNotifications;
+import com.intuit.mobile.png.sdk.PushNotificationsV2;
+import com.intuit.mobile.png.sdk.UserTypeEnum;
+import com.intuit.mobile.png.sdk.callback.RegisterUserCallback;
 
 /**
  * The {@code GCMIntentService} class extends the main {@link GCMBaseIntentService} class
@@ -40,6 +42,12 @@ import com.intuit.mobile.png.sdk.PushNotifications;
  * message and also to take action after a successful registration to the PNG service.
  */
 public class GCMIntentService extends GCMBaseIntentService {
+    private static final String LOG_TAG = GCMIntentService.class.getSimpleName();
+    private static final String REG_URL = "https://png.d2d.msg.intuit.com";
+
+    private static String userid;
+    private static String[] groups;
+
     /**
      * Constructor for GCMIntentService.  This class sets up the communication with
      * the Push Notification Gateway.
@@ -52,32 +60,75 @@ public class GCMIntentService extends GCMBaseIntentService {
     }
 
     /**
-     * This callback method is invoked after a successful registration with GCM.
-     * Here we are passing the new registrationId to the PNG SDK. The SDK will
-     * send the registrationId along with any user and userGroup mappings to the
-     * PNG servers.
+     * Register with GCM, which will eventually trigger {@link #onRegistered} to be called.
+     *
+     * @param context {@link Context} Application context
+     * @param userid  {@link String} how your app refers to this user
+     * @param groups  {@link String[]} may be null
+     */
+    public static void register(final Context context, String userid, final String[] groups) {
+        GCMIntentService.userid = userid;
+        GCMIntentService.groups = groups;
+
+        PushNotificationsV2.URL_OVERRIDE = REG_URL;
+        PushNotificationsV2.Environment environment = PushNotificationsV2.Environment.SANDBOX;
+        PushNotificationsV2.initialize(OverdueInvoicesActivity.pngSenderId, OverdueInvoicesActivity.PROJECT_NUMBER, environment);
+        PushNotificationsV2.setLogging(true);
+        PushNotificationsV2.registerForGCMNotifications(context);
+    }
+
+    /**
+     * Google will call this method, providing you a unique registrationId for this device.
+     * We recommended to save the registrationId to local preferences for later use.
+     * e.g. saveRegistrationId(registrationId);
+     *
+     * @param context        {@link Context} Application context
+     * @param registrationId {@link String} unique registrationId for this device
      */
     @Override
-    protected void onRegistered(Context context, String regId) {
-        PushNotifications.updateServer(context, regId);
+    protected void onRegistered(final Context context, final String registrationId) {
+        Log.i(TAG, "onRegistered called.  registrationId = " + registrationId);
+
+        PushNotificationsV2.registerUser(
+                this,
+                GCMIntentService.userid,
+                UserTypeEnum.OTHER,
+                GCMIntentService.groups,
+                registrationId,
+                new RegisterUserCallback() {
+
+
+                    @Override
+                    public void onUserRegistered() {
+                        Log.i(LOG_TAG, "Registration call to PNG servers was accepted");
+                    }
+
+                    @Override
+                    public void onError(String code, String description) {
+                        Log.i(LOG_TAG, String.format("Received error callback from PNG. Error code= %s, description= %s", code, description));
+                    }
+                });
     }
 
     /**
      * This callback method is invoked when GCM delivers a notification to the
-     * device.  Here we are simply providing an example of how to display the
-     * notification to the user. There are many other implementation options.
-     * Older API versions of Android may need to use different classes and
-     * methods.
+     * device.
+     *
+     * Assuming that the json encoded message is a valid (see IntuitWear JSONSchema) document,
+     * we acquire an instance of a {@link IWearNotificationSender.Factory} to create a NotificationSender,
+     * which will send the generated notification to the wearable device.
+     *
+     * @param context {@link Context} Application context
+     * @param intent {@link Intent} received with the push notification
      */
     @Override
-    protected void onMessage(Context context, Intent intent) {
+    protected void onMessage(final Context context, final Intent intent) {
 
         String msgJson = intent.getStringExtra("payload");
 
         IWearNotificationSender.Factory iWearSender = IWearNotificationSender.Factory.getsInstance();
-        IWearAndroidNotificationSender androidNotificationSender = null;
         try {
-            androidNotificationSender = (IWearAndroidNotificationSender) iWearSender.createNotificationSender(IWearNotificationType.ANDROID, this, msgJson);
+            IWearAndroidNotificationSender androidNotificationSender = (IWearAndroidNotificationSender) iWearSender.createNotificationSender(IWearNotificationType.ANDROID, this, msgJson);
             androidNotificationSender.sendNotification(this);
         } catch (IntuitWearException e) {
             e.printStackTrace();

@@ -28,9 +28,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.intuit.mobile.png.sdk.PushNotifications;
-import com.intuit.mobile.png.sdk.UserTypeEnum;
-
 /**
  * This Android Wear sample app is a fully functioning example of how to use the IntuitWear SDK
  * for Android integrated with itDuzzit to build an app that sends a notification to an Android
@@ -55,13 +52,14 @@ public class OverdueInvoicesActivity extends Activity {
      * GCM Project Number constant.
      * Set this to your own GCM Project Number.
      */
-    public static final String PROJECT_NUMBER = "INSERT_YOUR_GOOGLE_PROJECT_NUMBER_HERE";
+    public static final String PROJECT_NUMBER = "270204895990";
+//    public static final String PROJECT_NUMBER = "INSERT_YOUR_GOOGLE_PROJECT_NUMBER_HERE";
 
     /**
      * Push Notification Gateway Sender Id constant.
      * Set this to your own PNG Sender Id.
      */
-    public final String pngSenderId = "INSERT-YOUR-SENDERID-HERE";
+    public static final String pngSenderId = "INSERT-YOUR-SENDERID-HERE";
 
     /**
      * Your QBO email address OR some other unique name to identify who to send the PUSH to.
@@ -83,9 +81,7 @@ public class OverdueInvoicesActivity extends Activity {
 	 */
     private void setupPushGateway() {
 
-        PushNotifications.register(this, PROJECT_NUMBER,
-                username, null, UserTypeEnum.OTHER, pngSenderId,
-                false);
+        GCMIntentService.register(this, username, new String[]{"OverdueInvoices"});
     }
 
     /**
@@ -110,9 +106,6 @@ public class OverdueInvoicesActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 }
