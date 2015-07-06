@@ -52,8 +52,7 @@ public class OverdueInvoicesActivity extends Activity {
      * GCM Project Number constant.
      * Set this to your own GCM Project Number.
      */
-    public static final String PROJECT_NUMBER = "270204895990";
-//    public static final String PROJECT_NUMBER = "INSERT_YOUR_GOOGLE_PROJECT_NUMBER_HERE";
+    public static final String PROJECT_NUMBER = "INSERT_YOUR_GOOGLE_PROJECT_NUMBER_HERE";
 
     /**
      * Push Notification Gateway Sender Id constant.

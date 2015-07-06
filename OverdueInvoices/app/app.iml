@@ -94,10 +94,10 @@
     <orderEntry type="library" exported="" name="play-services-maps-7.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-gcm-7.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-cast-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="intuitwear-android-sdk-0.3" level="project" />
     <orderEntry type="library" exported="" name="play-services-ads-7.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-identity-7.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-wearable-7.3.0" level="project" />
+    <orderEntry type="library" exported="" name="intuitwear-android-sdk-0.4-" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-22.0.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-safetynet-7.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-plus-7.3.0" level="project" />
